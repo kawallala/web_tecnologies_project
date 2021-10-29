@@ -1,19 +1,22 @@
 import React from 'react';
-/*import {
-  Box
-  /*ImageList,
+import {
+  Box,
+  ImageList,
   ImageListItem,
   ImageListItemBar,
-  ImageListItemBar,
-  ListItem
-} from '@mui/material';*/
-import Box from '@mui/material/Box'
+  List,
+  ListItem,
+  Paper,
+  Typography
+} from '@mui/material';
+import { Grid } from '@material-ui/core';
+/*import Box from '@mui/material/Box'
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import './userPhotos.css';
+import './userPhotos.css';*/
 
 
 /**
@@ -25,7 +28,38 @@ class UserPhotos extends React.Component {
     this.state = {
       photos : window.cs142models.photoOfUserModel(this.props.match.params.userId)
     }
-    console.log(this.state.photos)
+    console.log(this.state.photos);
+  }
+
+  buildComments(comments){
+    console.log(comments);
+    let commentView = <List/>
+    if(comments !== undefined){
+      commentView = 
+        <List>
+        {comments.map((comment) => {
+          return (
+                <ListItem disablePadding key={comment._id}>
+                  <Grid container spacing={8}>
+                    <Grid item xs={6}>
+                      {comment.user.first_name}
+                    </Grid>
+                    <Grid item xs={6}>
+                        {comment.date_time}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Paper className="cs142-main-grid-item">
+                        <Typography variant="body1">
+                          {comment.comment}
+                        </Typography>
+                      </Paper>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+              )})}
+        </List>
+    }
+    return commentView
   }
 
   render() {
@@ -54,24 +88,26 @@ class UserPhotos extends React.Component {
 
       <Box sx={{ width: 500, height: 450, overflowY: 'scroll' }}>
         <ImageList variant="masonry" cols={3} gap={8}>
-          {this.state.photos.map((item) => (
+          {this.state.photos.map((item) => {return (
             <ImageListItem key={item._id}>
-              <ImageListItemBar position="above" title={item.date_time} />
+              <ImageListItemBar position="top" title={item.date_time} />
               <img
-                src={`${item.File_name}`}
-                alt={item.File_name}
+                src={`/images/${item.file_name}`}
+                alt={item.file_name}
                 loading="lazy"
               />
               <h2>Comments</h2>
-              <List>
-              {/*{item.comments.map((comment) => (
-                <ListItem disablePadding>
-                  Comment
-                </ListItem>
-              ))}*/}
-              </List>
+              {this.buildComments(item.comments)}
+              {/*<List>
+                {item.comments.map((comment) => {return (
+                  <ListItem disablePadding>
+                    Comment
+                  </ListItem>
+                )})
+                console.log(item.comments)}
+              </List>*/}
             </ImageListItem>
-          ))}
+          )})}
         </ImageList>
       </Box>
     );
