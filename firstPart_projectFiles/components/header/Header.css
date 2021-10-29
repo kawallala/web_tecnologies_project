@@ -1,0 +1,23 @@
+.header_container{
+    background-image: url("/compiled/777471d94a4e19d3b443d292e3b05c73.jpg");
+    background-size: 100% auto ;
+    background-attachment: fixed;
+    background-position: 0px 0px;
+    padding: 0%;
+    margin: 0%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header_text{
+    font-family: 'Brush Script MT, Brush Script Std, cursive';
+    color: aqua;
+    text-align: center;
+}
+
+div{
+    /*border: solid black;*/
+    margin: 0%;
+}
