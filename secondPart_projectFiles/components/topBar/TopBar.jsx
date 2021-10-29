@@ -5,7 +5,7 @@ import {
 import './TopBar.css';
 
 /**
- * Define TopBar, a React componment of CS142 project #5
+ * Define TopBar, a React component of CS142 project #5
  */
 class TopBar extends React.Component {
   constructor(props) {
