@@ -22,8 +22,9 @@ class Example extends React.Component {
     // We can initialize it here.
     // We read the example model data into the state variable 'name'
     this.state = {
-      name: window.cs142models.exampleModel().name,
+      person: window.cs142models.exampleModel(),
       counter: 0,
+      mottoChange: '',
       inputValue: '',
       buttonWasClicked: '',
     };
@@ -67,8 +68,17 @@ class Example extends React.Component {
   // Method called when the input box is typed into.
   handleChange(event) {
     this.setState({ inputValue: event.target.value });
+  };
+
+  handleMottoChange = event => {
+    this.setState({ mottoChange: event.target.value})
   }
 
+  handleMottoButton = () => 
+  {
+    console.log("pressed")
+    this.setState({person: {...this.state.person, motto: this.state.mottoChange}, mottoChange: ""})
+  }
   // Method called when the button is pushed
   /* eslint-disable-next-line no-unused-vars */
   handleButtonClick(buttonName, event) {
@@ -103,6 +113,10 @@ class Example extends React.Component {
         <h1>CS142 Project#4 React.js Example</h1>
 
         <div className="motto-update">
+          <p>{this.state.person.motto} - {this.state.person.name}</p>
+          <label htmlFor="InMotto">Motto change?</label>
+          <input type="text" value={this.state.mottoChange} onChange={this.handleMottoChange} />
+          <button type="button" onClick={this.handleMottoButton}>Change</button>
           {/* Your problem #1 motto displaying and updating widget goes here */}
         </div>
 
@@ -172,7 +186,7 @@ class Example extends React.Component {
           should render as:
         </p>
         <p className="cs142-example-output">
-          My name is &ldquo; {this.state.name} &rdquo;.
+          My name is &ldquo; {this.state.person.name} &rdquo;.
         </p>
 
         <h3>

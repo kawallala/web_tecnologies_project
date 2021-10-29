@@ -30,5 +30,10 @@ you use won't conflict with these names.
 }
 
 .cs142-code-name {
-  font-family: Courier New, monospace;
+    font-family: Courier New, monospace;
+}
+
+.motto-update {
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
 }

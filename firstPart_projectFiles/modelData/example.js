@@ -14,9 +14,10 @@ if (cs142models === undefined) {
    cs142models = {};
 }
 
-cs142models.exampleModel = function() {
+cs142models.exampleModel = function () {
    return {
-      name: 'Unknown Name'
+      name: 'Martin Araya',
+      motto: "If there is time, there is a way to waste it"
    };
 };
 
