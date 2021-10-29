@@ -1,10 +1,9 @@
-import React, { useDebugValue } from 'react';
+import React from 'react';
 import {
   Divider,
   List,
   ListItem,
   ListItemText,
-  Typography,
 }
 from '@material-ui/core';
 import './userList.css';
@@ -16,10 +15,6 @@ import { Link } from 'react-router-dom';
 class UserList extends React.Component {
   constructor(props) {
     super(props);
-    console.log(
-      "window.cs142models.userListModel()",
-      window.cs142models.userListModel()
-    );
     this.state = {
       userList : window.cs142models.userListModel()
     }
@@ -35,11 +30,11 @@ class UserList extends React.Component {
         </Typography> */}
         <List component="nav">
           {this.state.userList.map((value, key)=>(
-              <Link to={"/users/" + value._id} key = {key} underline = "none" color="inherit">
-            <ListItem >
-              <ListItemText primary={value.first_name} onClick = {() => console.log("hello")}/>
-            </ListItem>
-            <Divider />
+            <Link to={"/users/" + value._id} key = {key} underline = "none" color="inherit">
+              <ListItem >
+                <ListItemText primary={value.first_name}/>
+              </ListItem>
+              <Divider />
             </Link>
           ))}
         </List>
