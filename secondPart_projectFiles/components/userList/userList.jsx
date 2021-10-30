@@ -4,6 +4,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Box
 }
 from '@material-ui/core';
 import './userList.css';
@@ -22,7 +23,7 @@ class UserList extends React.Component {
 
   render() {
     return (
-      <div>
+      <Box height = "100%" overflow="auto">
         {/* <Typography variant="body1">
           This is the user list, which takes up 3/12 of the window.
           You might choose to use <a href="https://material-ui.com/demos/lists/">Lists</a> and <a href="https://material-ui.com/demos/dividers">Dividers</a> to
@@ -41,7 +42,7 @@ class UserList extends React.Component {
         {/* <Typography variant="body1">
           The model comes in from window.cs142models.userListModel()
         </Typography> */}
-      </div>
+      </Box>
     );
   }
 }

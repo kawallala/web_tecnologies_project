@@ -21,25 +21,23 @@ class UserPhotos extends React.Component {
     this.state = {
       photos : window.cs142models.photoOfUserModel(this.props.match.params.userId)
     }
-    console.log(this.state.photos);
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.match.params.userId !== state.photos[0].user_id) {
       return {
-        user: window.cs142models.userModel(props.match.params.userId)
+        photos : window.cs142models.photoOfUserModel(props.match.params.userId)
       };
     }
     return null;
   }
 
   buildComments(comments){
-    console.log(comments);
     let commentView = <Box/>
     if(comments !== undefined){
       commentView = 
         <Box>
-          <Typography variant="h4"> Comments</Typography>
+          <Typography variant="h6"> Comments</Typography>
           <List>
           {comments.map((comment) => {
             return (
@@ -77,10 +75,10 @@ class UserPhotos extends React.Component {
 
   render() {
     return (
-      <Box xs = {12} overflow="scrollY">
-        <ImageList variant="masonry" cols={2} gap={8}>
+      <Box height = "100%" overflow="auto">
+        <ImageList variant="masonry" cols={3} gap={8}>
           {this.state.photos.map((item) => {return (
-            <ImageListItem key={item._id}>
+            <ImageListItem key={item._id} style={{backgroundColor: "#F0F0F0"}} >
               <img
                 src={`/images/${item.file_name}`}
                 alt={item.file_name}

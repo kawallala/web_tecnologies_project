@@ -4,7 +4,7 @@ import {
   HashRouter, Route, Switch
 } from 'react-router-dom';
 import {
-  Grid, Typography, Paper
+  Grid, Typography, Paper, Box
 } from '@material-ui/core';
 import './styles/main.css';
 
@@ -22,7 +22,7 @@ class PhotoShare extends React.Component {
   render() {
     return (
       <HashRouter>
-      <div>
+      <Box overflow="hidden">
       <Grid container spacing={8}>
         <Grid item xs={12}>
           <TopBar/>
@@ -58,7 +58,7 @@ class PhotoShare extends React.Component {
           </Paper>
         </Grid>
       </Grid>
-      </div>
+      </Box>
     </HashRouter>
     );
   }
