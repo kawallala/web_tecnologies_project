@@ -7,9 +7,10 @@ import {
   List,
   ListItem,
   Paper,
-  Typography
+  Typography,
 } from '@mui/material';
 import { Grid } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 
 /**
@@ -45,9 +46,11 @@ class UserPhotos extends React.Component {
                     <Paper>
                       <Grid container>
                         <Grid item xs={6}>
-                          <Typography  variant="body1" m = {0.5}>
-                            {comment.user.first_name}
-                          </Typography>
+                          <Link to={"/users/" + comment.user._id} style={{ textDecoration: 'none' }}>
+                            <Typography  variant="body1" m = {0.5}>
+                              {comment.user.first_name+" "+comment.user.last_name}
+                            </Typography>
+                          </Link>
                         </Grid>
                         <Grid item xs={6} align="right" m = {0.5}>
                           <Typography variant="caption text" align="right">
