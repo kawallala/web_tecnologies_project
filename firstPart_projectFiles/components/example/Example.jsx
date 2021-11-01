@@ -68,7 +68,7 @@ class Example extends React.Component {
   // Method called when the input box is typed into.
   handleChange(event) {
     this.setState({ inputValue: event.target.value });
-  };
+  }
 
   handleMottoChange = event => {
     this.setState({ mottoChange: event.target.value})

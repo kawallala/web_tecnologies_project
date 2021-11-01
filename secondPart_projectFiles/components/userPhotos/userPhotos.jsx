@@ -3,7 +3,6 @@ import {
   Box,
   ImageList,
   ImageListItem,
-  ImageListItemBar,
   List,
   ListItem,
   Paper,
@@ -20,13 +19,15 @@ class UserPhotos extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user_id : this.props.match.params.userId,
       photos : window.cs142models.photoOfUserModel(this.props.match.params.userId)
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.match.params.userId !== state.photos[0].user_id) {
+    if (props.match.params.userId !== state.user_id) {
       return {
+        user_id : props.match.params.userId,
         photos : window.cs142models.photoOfUserModel(props.match.params.userId)
       };
     }
