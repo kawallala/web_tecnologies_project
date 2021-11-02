@@ -8,6 +8,13 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+
+import MobileStepper from '@mui/material/MobileStepper';
+import Button from '@mui/material/Button';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import SwipeableViews from 'react-swipeable-views';
+
 import { Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
@@ -20,7 +27,8 @@ class UserPhotos extends React.Component {
     super(props);
     this.state = {
       user_id : this.props.match.params.userId,
-      photos : window.cs142models.photoOfUserModel(this.props.match.params.userId)
+      photos : window.cs142models.photoOfUserModel(this.props.match.params.userId),
+      activeStep: 0,
     }
   }
 
@@ -28,7 +36,8 @@ class UserPhotos extends React.Component {
     if (props.match.params.userId !== state.user_id) {
       return {
         user_id : props.match.params.userId,
-        photos : window.cs142models.photoOfUserModel(props.match.params.userId)
+        photos : window.cs142models.photoOfUserModel(props.match.params.userId),
+        activeStep: 0,
       };
     }
     return null;
@@ -77,8 +86,99 @@ class UserPhotos extends React.Component {
     return commentView
   }
 
+  buildStepper(){
+      
+      /*const [activeStep, setActiveStep] = [0,0]*/
+      const maxSteps = this.state.photos.length;
+    
+      const handleNext = () => {
+        this.setState({
+            activeStep : this.state.activeStep +1,
+        })
+      };
+    
+      const handleBack = () => {
+        this.setState({
+          activeStep : this.state.activeStep -1,
+        })
+      };
+    
+      const handleStepChange = (step) => {
+        this.setState({
+          activeStep : step,
+        })
+      };
+    
+      return (
+      <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+        <MobileStepper
+          steps={maxSteps}
+          position="static"
+          activeStep={this.state.activeStep}
+          nextButton={
+            <Button
+              size="small"
+              onClick={handleNext}
+              disabled={this.state.activeStep === maxSteps - 1}
+            >
+              Next
+              <KeyboardArrowRight />
+            </Button>
+          }
+          backButton={
+            <Button size="small" onClick={handleBack} disabled={this.state.activeStep === 0}>
+              <KeyboardArrowLeft />
+              Back
+            </Button>
+          }
+        />
+        <SwipeableViews
+          axis={'x'}
+          index={this.state.activeStep}
+          onChangeIndex={handleStepChange}
+          enableMouseEvents
+        >
+          {this.state.photos.map((step, index) => (
+            <div key={step._id}>
+              {Math.abs(this.state.activeStep - index) <= 2 ? (
+                <Box
+                  component="img"
+                  sx={{
+                    height: 255,
+                    display: 'block',
+                    maxWidth: 400,
+                    overflow: 'hidden',
+                    width: '100%',
+                  }}
+                  src={`/images/${step.file_name}`}
+                  alt={step.file_name}
+                />
+              ) : null}
+            </div>
+          ))}
+        </SwipeableViews>
+        <Paper
+          square
+          elevation={0}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            height: 50,
+            pl: 2,
+            bgcolor: 'background.default',
+          }}
+        >
+          <Typography>{this.state.photos[this.state.activeStep].date_time}</Typography>
+        </Paper>
+      </Box>
+    );
+  }
+
   render() {
     return (
+      <div>
+       {this.buildStepper()}
+      {/*
       <Box height = "100%" overflow="auto">
         <ImageList variant="masonry" cols={3} gap={8}>
           {this.state.photos.map((item) => {return (
@@ -98,6 +198,8 @@ class UserPhotos extends React.Component {
           )})}
         </ImageList>
       </Box>
+          );*/}
+          </div>
     );
   }
 }
