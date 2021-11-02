@@ -86,9 +86,7 @@ class UserPhotos extends React.Component {
     return commentView
   }
 
-  buildStepper(){
-      
-      /*const [activeStep, setActiveStep] = [0,0]*/
+  renderStepper(){
       const maxSteps = this.state.photos.length;
     
       const handleNext = () => {
@@ -96,13 +94,11 @@ class UserPhotos extends React.Component {
             activeStep : this.state.activeStep +1,
         })
       };
-    
       const handleBack = () => {
         this.setState({
           activeStep : this.state.activeStep -1,
         })
       };
-    
       const handleStepChange = (step) => {
         this.setState({
           activeStep : step,
@@ -110,8 +106,13 @@ class UserPhotos extends React.Component {
       };
     
       return (
-      <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
-        <MobileStepper
+      <Box sx={{ maxWidth: 1, flexGrow: 1 }}
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <MobileStepper sx={{ maxWidth: 400}} 
           steps={maxSteps}
           position="static"
           activeStep={this.state.activeStep}
@@ -144,11 +145,12 @@ class UserPhotos extends React.Component {
                 <Box
                   component="img"
                   sx={{
-                    height: 255,
+                    maxHeight: 1,
                     display: 'block',
-                    maxWidth: 400,
+                    width: 1,
+                    height: '70vh',
                     overflow: 'hidden',
-                    width: '100%',
+                    objectFit: 'contain',
                   }}
                   src={`/images/${step.file_name}`}
                   alt={step.file_name}
@@ -157,30 +159,17 @@ class UserPhotos extends React.Component {
             </div>
           ))}
         </SwipeableViews>
-        <Paper
-          square
-          elevation={0}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            height: 50,
-            pl: 2,
-            bgcolor: 'background.default',
-          }}
-        >
-          <Typography>{this.state.photos[this.state.activeStep].date_time}</Typography>
-        </Paper>
+        <Typography variant="caption text">
+            {this.state.photos[this.state.activeStep].date_time}
+        </Typography>
+        {this.buildComments(this.state.photos[this.state.activeStep].comments)}
       </Box>
     );
   }
 
-  render() {
-    return (
-      <div>
-       {this.buildStepper()}
-      {/*
-      <Box height = "100%" overflow="auto">
-        <ImageList variant="masonry" cols={3} gap={8}>
+  renderList(){
+    return(
+      <ImageList variant="masonry" cols={3} gap={8}>
           {this.state.photos.map((item) => {return (
             <ImageListItem key={item._id} style={{backgroundColor: "#F0F0F0"}} >
               <img
@@ -197,9 +186,14 @@ class UserPhotos extends React.Component {
             </ImageListItem>
           )})}
         </ImageList>
+    );
+  }
+
+  render() {
+    return (
+      <Box height = "100%" overflow="auto">
+        {this.renderStepper()}
       </Box>
-          );*/}
-          </div>
     );
   }
 }
