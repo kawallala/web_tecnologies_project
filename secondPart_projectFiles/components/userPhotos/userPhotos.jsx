@@ -7,12 +7,12 @@ import {
   ListItem,
   Paper,
   Typography,
+  MobileStepper,
+  Button,
+  Switch,
 } from '@mui/material';
 
-import MobileStepper from '@mui/material/MobileStepper';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import {KeyboardArrowLeft, KeyboardArrowRight} from '@material-ui/icons';
 import SwipeableViews from 'react-swipeable-views';
 
 import { Grid } from '@material-ui/core';
@@ -28,16 +28,20 @@ class UserPhotos extends React.Component {
     this.state = {
       user_id : this.props.match.params.userId,
       photos : window.cs142models.photoOfUserModel(this.props.match.params.userId),
-      activeStep: 0,
+      advancedMode: this.props.match.params.hasOwnProperty('index'),
+      activeStep: this.props.match.params.hasOwnProperty('index')? parseInt(this.props.match.params.index): 0,
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.match.params.userId !== state.user_id) {
+    console.log("Hallo")
+    if (props.match.params.userId !== state.user_id || 
+      (props.match.params.hasOwnProperty('index')&&props.match.params.index !== state.activeStep)) {
       return {
         user_id : props.match.params.userId,
         photos : window.cs142models.photoOfUserModel(props.match.params.userId),
-        activeStep: 0,
+        advancedMode: props.match.params.hasOwnProperty('index'),
+        activeStep: props.match.params.hasOwnProperty('index')? parseInt(props.match.params.index): 0,
       };
     }
     return null;
@@ -90,11 +94,13 @@ class UserPhotos extends React.Component {
       const maxSteps = this.state.photos.length;
     
       const handleNext = () => {
+        this.props.history.push('/photos/'+this.state.user_id+'/'+(this.state.activeStep+1))
         this.setState({
             activeStep : this.state.activeStep +1,
         })
       };
       const handleBack = () => {
+        this.props.history.push('/photos/'+this.state.user_id+'/'+(this.state.activeStep-1))
         this.setState({
           activeStep : this.state.activeStep -1,
         })
@@ -103,6 +109,7 @@ class UserPhotos extends React.Component {
         this.setState({
           activeStep : step,
         })
+        this.props.history.push('/photos/'+this.state.user_id+'/'+step)
       };
     
       return (
@@ -167,6 +174,17 @@ class UserPhotos extends React.Component {
     );
   }
 
+  handleAdvancedModeChange = (event) => {
+    this.setState({
+      advancedMode : event.target.checked,
+    })
+    if(event.target.checked){
+      this.props.history.push('/photos/'+this.state.user_id+'/'+this.state.activeStep)
+    }else{
+      this.props.history.push('/photos/'+this.state.user_id)
+    }
+  };
+
   renderList(){
     return(
       <ImageList variant="masonry" cols={3} gap={8}>
@@ -192,7 +210,13 @@ class UserPhotos extends React.Component {
   render() {
     return (
       <Box height = "100%" overflow="auto">
-        {this.renderStepper()}
+        <Switch
+          checked={this.state.advancedMode}
+          onChange={this.handleAdvancedModeChange}
+        />
+        {this.state.advancedMode?
+         this.renderStepper():
+         this.renderList()}
       </Box>
     );
   }
