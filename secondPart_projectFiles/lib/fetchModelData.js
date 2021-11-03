@@ -16,11 +16,18 @@ var Promise = require("Promise");
 
 
 function fetchModel(url) {
-  return new Promise(function(resolve, reject) {
-      console.log(url);
-      setTimeout(() => reject({status: 501, statusText: "Not Implemented"}),0);
-      // On Success return:
-      // resolve({data: getResponseObject});
+  return new Promise(function (resolve, reject) {
+    let request = new XMLHttpRequest();
+    request.open('GET', "http://localhost:3000/" + url);
+    request.responseType = "json";
+    request.onload = () => {
+      resolve(request.response);
+    }
+    request.send();
+    //console.log(url);
+    //setTimeout(() => reject({status: 501, statusText: "Not Implemented"}),0);
+    // On Success return:
+    // resolve({data: getResponseObject});
   });
 }
 
