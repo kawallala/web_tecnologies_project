@@ -4,6 +4,8 @@ import {
   Typography
 } from '@material-ui/core';
 import './userDetail.css';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 /**
@@ -12,6 +14,7 @@ import './userDetail.css';
 class UserDetail extends React.Component {
   constructor(props) {
     super(props);
+    console.log(window.cs142models.userModel(this.props.match.params.userId))
     this.state = {
       user : window.cs142models.userModel(this.props.match.params.userId)
     }
@@ -71,13 +74,11 @@ class UserDetail extends React.Component {
             {this.state.user.description}
           </Typography>
         </Grid>
-        {/*<Typography variant="body1">
-        This should be the UserDetail view of the PhotoShare app. Since
-        it is invoked from React Router the params from the route will be
-        in property match. So this should show details of user:
-        {this.props.match.params.userId}. You can fetch the model for the
-        user from window.cs142models.userModel(userId).
-    </Typography>*/}
+        <Grid item xs = {12}>
+          <Link to={"/photos/" + this.state.user._id}>
+            See photos
+          </Link>
+        </Grid>
       </Grid>
       
     );
