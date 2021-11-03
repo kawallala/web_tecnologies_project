@@ -9,6 +9,7 @@ import {
 from '@material-ui/core';
 import './userList.css';
 import { Link } from 'react-router-dom';
+import fetchModel from '../../lib/fetchModelData';
 
 /**
  * Define UserList, a React componment of CS142 project #5
@@ -17,18 +18,23 @@ class UserList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userList : window.cs142models.userListModel()
+      userList: {},
+      loaded: false,
     }
+    
+    //this.state = {
+     // userList : window.cs142models.userListModel()
+    //}
   }
-
+  componentDidMount(){
+    fetchModel("user/list").then((value) =>
+      this.setState({userList: value, loaded:true})
+    )
+  }
   render() {
     return (
-      <Box height = "100%" overflow="auto">
-        {/* <Typography variant="body1">
-          This is the user list, which takes up 3/12 of the window.
-          You might choose to use <a href="https://material-ui.com/demos/lists/">Lists</a> and <a href="https://material-ui.com/demos/dividers">Dividers</a> to
-          display your users like so:
-        </Typography> */}
+       <Box height = "100%" overflow="auto">
+         {this.state.loaded ? 
         <List component="nav">
           {this.state.userList.map((value, key)=>(
             <Link to={"/users/" + value._id} key = {key} underline = "none" color="inherit">
@@ -38,11 +44,12 @@ class UserList extends React.Component {
               <Divider />
             </Link>
           ))}
-        </List>
+        </List>: <Box></Box>}
         {/* <Typography variant="body1">
           The model comes in from window.cs142models.userListModel()
         </Typography> */}
-      </Box>
+      </Box> 
+      
     );
   }
 }
