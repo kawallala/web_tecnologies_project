@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   Grid,
-  Typography
+  Typography,
+  Box,
+  CircularProgress
 } from '@material-ui/core';
 import './userDetail.css';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
-
+import fetchModel from '../../lib/fetchModelData';
 
 /**
  * Define UserDetail, a React componment of CS142 project #5
@@ -14,27 +16,36 @@ import { Link } from 'react-router-dom';
 class UserDetail extends React.Component {
   constructor(props) {
     super(props);
-    console.log(window.cs142models.userModel(this.props.match.params.userId))
     this.state = {
-      user : window.cs142models.userModel(this.props.match.params.userId)
+      id: props.match.params.userId,
+      user : {},
+      loaded:false
+    }
+    // console.log(window.cs142models.userModel(this.props.match.params.userId))
+    // this.state = {
+    //   user : window.cs142models.userModel(this.props.match.params.userId)
+    // }
+  }
+  componentDidMount(){
+    fetchModel("user/" + this.state.id).then((value)=>{
+      this.setState({id: this.state.id, user:value, loaded: true})
+    })
+  }
+  
+  componentDidUpdate(prevProps){
+    if(this.props.match.params.userId !== prevProps.match.params.userId){
+      console.log("updating")
+      fetchModel("user/" + this.props.match.params.userId).then((value)=>{
+        this.setState({id: this.props.match.params.userId, user:value, loaded: true})
+      })
     }
   }
 
-  static getDerivedStateFromProps(props, state) {
-    // Any time the current user changes,
-    // Reset any parts of state that are tied to that user.
-    // In this simple example, that's just the email.
-    if (props.match.params.userId !== state.user._id) {
-      return {
-        user: window.cs142models.userModel(props.match.params.userId)
-      };
-    }
-    return null;
-  }
-  
   render() {
     return (
-      <Grid container spacing ={2}>
+      <Box>
+        {this.state.loaded?
+        <Grid container spacing ={2}>
         <Grid item xs={3}>
           <Typography variant="subtitle1">
             name:
@@ -79,7 +90,9 @@ class UserDetail extends React.Component {
             See photos
           </Link>
         </Grid>
-      </Grid>
+      </Grid>: <CircularProgress/>}
+      
+      </Box>
       
     );
   }

@@ -4,7 +4,8 @@ import {
   List,
   ListItem,
   ListItemText,
-  Box
+  Box,
+  CircularProgress
 }
 from '@material-ui/core';
 import './userList.css';
@@ -21,10 +22,6 @@ class UserList extends React.Component {
       userList: {},
       loaded: false,
     }
-    
-    //this.state = {
-     // userList : window.cs142models.userListModel()
-    //}
   }
   componentDidMount(){
     fetchModel("user/list").then((value) =>
@@ -44,7 +41,7 @@ class UserList extends React.Component {
               <Divider />
             </Link>
           ))}
-        </List>: <Box></Box>}
+        </List> : <CircularProgress/>}
         {/* <Typography variant="body1">
           The model comes in from window.cs142models.userListModel()
         </Typography> */}
