@@ -38,13 +38,28 @@ class UserPhotos extends React.Component {
     if (props.match.params.userId !== state.user_id || 
       (props.match.params.hasOwnProperty('index')&&props.match.params.index !== state.activeStep)) {
       return {
-        user_id : props.match.params.userId,
+        user_id : props.match.params.user_id,
         photos : window.cs142models.photoOfUserModel(props.match.params.userId),
         advancedMode: props.match.params.hasOwnProperty('index'),
         activeStep: props.match.params.hasOwnProperty('index')? parseInt(props.match.params.index): 0,
       };
     }
     return null;
+  }
+
+  componentDidMount(){
+    fetchModel("photos/" + this.state.id).then((value)=>{
+      this.setState({id: this.state.id, user:value, loaded: true})
+    })
+  }
+  
+  componentDidUpdate(prevProps){
+    if(this.props.match.params.userId !== prevProps.match.params.userId){
+      console.log("updating")
+      fetchModel("user/" + this.props.match.params.userId).then((value)=>{
+        this.setState({id: this.props.match.params.userId, user:value, loaded: true})
+      })
+    }
   }
 
   buildComments(comments){
@@ -73,11 +88,9 @@ class UserPhotos extends React.Component {
                         </Grid>
                         <Grid item xs={12}>
                           <Box p = {0.5} pl ={1.5}>
-                            <Paper>
-                              <Typography variant="body2">
-                                {comment.comment}
-                              </Typography>
-                            </Paper>
+                            <Typography variant="body2">
+                              {comment.comment}
+                            </Typography>
                           </Box>
                         </Grid>
                       </Grid>
