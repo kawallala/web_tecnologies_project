@@ -16,7 +16,7 @@ var Promise = require("Promise");
 
 
 function fetchModel(url) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(function (resolve) {
     let request = new XMLHttpRequest();
     request.open('GET', "http://localhost:3000/" + url);
     request.responseType = "json";
