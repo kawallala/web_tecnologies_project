@@ -9,15 +9,16 @@ import {
   Typography,
   MobileStepper,
   Button,
-  Switch,
+  Switch
 } from '@mui/material';
 
 import {KeyboardArrowLeft, KeyboardArrowRight} from '@material-ui/icons';
 import SwipeableViews from 'react-swipeable-views';
 
-import { Grid } from '@material-ui/core';
+import { CircularProgress, Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
+import fetchModel from '../../lib/fetchModelData';
 
 /**
  * Define UserPhotos, a React componment of CS142 project #5
@@ -27,37 +28,32 @@ class UserPhotos extends React.Component {
     super(props);
     this.state = {
       user_id : this.props.match.params.userId,
-      photos : window.cs142models.photoOfUserModel(this.props.match.params.userId),
       advancedMode: this.props.match.params.hasOwnProperty('index'),
       activeStep: this.props.match.params.hasOwnProperty('index')? parseInt(this.props.match.params.index): 0,
+      loaded : false,
     }
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    console.log("Hallo")
-    if (props.match.params.userId !== state.user_id || 
-      (props.match.params.hasOwnProperty('index')&&props.match.params.index !== state.activeStep)) {
-      return {
-        user_id : props.match.params.user_id,
-        photos : window.cs142models.photoOfUserModel(props.match.params.userId),
-        advancedMode: props.match.params.hasOwnProperty('index'),
-        activeStep: props.match.params.hasOwnProperty('index')? parseInt(props.match.params.index): 0,
-      };
-    }
-    return null;
   }
 
   componentDidMount(){
-    fetchModel("photos/" + this.state.id).then((value)=>{
-      this.setState({id: this.state.id, user:value, loaded: true})
+    fetchModel("photosOfUser/" + this.props.match.params.userId).then((value)=>{
+      this.setState({
+        photos: value,
+        loaded: true
+      })
     })
   }
   
   componentDidUpdate(prevProps){
-    if(this.props.match.params.userId !== prevProps.match.params.userId){
-      console.log("updating")
-      fetchModel("user/" + this.props.match.params.userId).then((value)=>{
-        this.setState({id: this.props.match.params.userId, user:value, loaded: true})
+    if(this.props.match.params.userId !== prevProps.match.params.userId|| 
+      (this.props.match.params.hasOwnProperty('index')&&this.props.match.params.index !== this.state.activeStep)||
+      (!this.props.match.params.hasOwnProperty('index')&&this.advancedMode)){
+      fetchModel("photosOfUser/" + this.props.match.params.userId).then((value)=>{
+        this.setState({
+          photos: value,
+          advancedMode: props.match.params.hasOwnProperty('index'),
+          activeStep: props.match.params.hasOwnProperty('index')? parseInt(props.match.params.index): 0,
+          loaded: true
+        })
       })
     }
   }
@@ -201,35 +197,39 @@ class UserPhotos extends React.Component {
   renderList(){
     return(
       <ImageList variant="masonry" cols={3} gap={8}>
-          {this.state.photos.map((item) => {return (
-            <ImageListItem key={item._id} style={{backgroundColor: "#F0F0F0"}} >
-              <img
-                src={`/images/${item.file_name}`}
-                alt={item.file_name}
-                loading="lazy"
-              />
-              <Box display="flex" flexDirection="column">
-                <Typography variant="caption text" align="right" align-content="flex-end">
-                  {item.date_time}
-                </Typography>
-              </Box>
-              {this.buildComments(item.comments)}
-            </ImageListItem>
-          )})}
-        </ImageList>
+        {this.state.photos.map((item) => {return (
+          <ImageListItem key={item._id} style={{backgroundColor: "#F0F0F0"}} >
+            <img
+              src={`/images/${item.file_name}`}
+              alt={item.file_name}
+              loading="lazy"
+            />
+            <Box display="flex" flexDirection="column">
+              <Typography variant="caption text" align="right" align-content="flex-end">
+                {item.date_time}
+              </Typography>
+            </Box>
+            {this.buildComments(item.comments)}
+          </ImageListItem>
+        )})}
+      </ImageList>
     );
   }
 
   render() {
     return (
       <Box height = "100%" overflow="auto">
-        <Switch
-          checked={this.state.advancedMode}
-          onChange={this.handleAdvancedModeChange}
-        />
-        {this.state.advancedMode?
-         this.renderStepper():
-         this.renderList()}
+        {this.state.loaded ?
+        <Box>
+          <Switch
+            checked={this.state.advancedMode}
+            onChange={this.handleAdvancedModeChange}
+          />
+          {this.state.advancedMode?
+          this.renderStepper():
+          this.renderList()}
+        </Box>
+        :<CircularProgress/>}
       </Box>
     );
   }
