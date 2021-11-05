@@ -5,6 +5,10 @@
   "description": "CS142 Project #5 - Start ReactJS PhotoApp",
   "main": "webServer.js",
   "scripts": {
+    "build_win": "node_modules\\.bin\\webpack -d",
+    "build_win:w": "node_modules\\.bin\\webpack -d --watch",
+    "lint_win": "node_modules\\.bin\\eslint *.jsx components\\*\\*.jsx lib\\*.js",
+
     "build": "node_modules/.bin/webpack -d",
     "build:w": "node_modules/.bin/webpack -d --watch",
     "lint": "node_modules/.bin/eslint *.jsx components/*/*.jsx lib/*.js"
@@ -43,10 +47,10 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
-    "style-loader": "^0.23.0",
-    "y18n": "^4.0.3",
     "ssri": "^6.0.2",
+    "style-loader": "^0.23.0",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.3.12",
+    "y18n": "^4.0.3"
   }
 }
