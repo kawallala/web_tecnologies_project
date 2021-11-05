@@ -6,7 +6,6 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import './userDetail.css';
-import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import fetchModel from '../../lib/fetchModelData';
 
