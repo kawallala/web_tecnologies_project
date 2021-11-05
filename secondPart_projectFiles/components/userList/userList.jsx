@@ -1,15 +1,16 @@
 import React from 'react';
 import {
-  Divider,
   List,
   ListItem,
-  ListItemText,
   Box,
-  CircularProgress
+  CircularProgress,
+  Card,
+  CardActionArea,
+  CardContent
 }
-from '@material-ui/core';
+  from '@material-ui/core';
 import './userList.css';
-import { Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import fetchModel from '../../lib/fetchModelData';
 
 /**
@@ -23,30 +24,35 @@ class UserList extends React.Component {
       loaded: false,
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     fetchModel("user/list").then((value) =>
-      this.setState({userList: value, loaded:true})
+      this.setState({ userList: value, loaded: true })
     )
   }
   render() {
     return (
-       <Box height = "100%" overflow="auto">
-         {this.state.loaded ? 
-        <List component="nav">
-          {this.state.userList.map((value, key)=>(
-            <Link to={"/users/" + value._id} key = {key} underline = "none" color="inherit">
-              <ListItem >
-                <ListItemText primary={value.first_name}/>
-              </ListItem>
-              <Divider />
-            </Link>
-          ))}
-        </List> : <CircularProgress/>}
-        {/* <Typography variant="body1">
+      <Route render={({ history }) => (
+        <Box height="100%" overflow="auto">
+          {this.state.loaded ?
+            <List component="nav">
+              {this.state.userList.map((value, key) => (
+                <ListItem key={key}>
+                  <Card style={{ width: "100%" }}>
+                    <CardActionArea onClick={() => { history.push("/users/" + value._id); }}>
+                      <CardContent>
+                        {value.first_name}
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </ListItem>
+              ))}
+            </List> : <CircularProgress />}
+          {/* <Typography variant="body1">
           The model comes in from window.cs142models.userListModel()
         </Typography> */}
-      </Box> 
-      
+        </Box>
+      )}
+      />
     );
   }
 }
