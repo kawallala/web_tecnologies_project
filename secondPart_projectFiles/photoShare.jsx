@@ -38,13 +38,8 @@ class PhotoShare extends React.Component {
                 <Switch>
                   <Route exact path="/"
                     render={() =>
-                      <Typography variant="body1">
-                        Welcome to your photosharing app! This <a href="https://material-ui.com/demos/paper/">Paper</a> component
-                        displays the main content of the application. The {"sm={9}"} prop in
-                        the <a href="https://material-ui.com/layout/grid/">Grid</a> item component makes it responsively
-                        display 9/12 of the window. The Switch component enables us to conditionally render different
-                        components to this part of the screen. You don&apos;t need to display anything here on the homepage,
-                        so you should delete this Route component once you get started.
+                      <Typography variant="h3">
+                        Welcome to our photo sharing app! {<br />} Click on the users on the side to view their profiles and photos, hope you enjoy!
                       </Typography>}
                   />
                   <Route path="/users/:userId"
