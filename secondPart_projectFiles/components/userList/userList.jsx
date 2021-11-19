@@ -15,6 +15,8 @@ import fetchModel from '../../lib/fetchModelData';
 
 /**
  * Define UserList, a React componment of CS142 project #5
+ * 
+ * The component displays a list of the registered users in the application, inside a material ui button each
  */
 class UserList extends React.Component {
   constructor(props) {
@@ -24,6 +26,10 @@ class UserList extends React.Component {
       loaded: false,
     }
   }
+
+  /**
+   * Fetches information from the API declared in ../../lib/fetchModelData/
+   */
   componentDidMount() {
     fetchModel("user/list").then((value) =>
       this.setState({ userList: value, loaded: true })
@@ -47,9 +53,6 @@ class UserList extends React.Component {
                 </ListItem>
               ))}
             </List> : <CircularProgress />}
-          {/* <Typography variant="body1">
-          The model comes in from window.cs142models.userListModel()
-        </Typography> */}
         </Box>
       )}
       />

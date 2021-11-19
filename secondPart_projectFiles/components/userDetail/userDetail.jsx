@@ -12,6 +12,8 @@ import fetchModel from '../../lib/fetchModelData';
 
 /**
  * Define UserDetail, a React componment of CS142 project #5
+ * 
+ * Shows the detail of the user in a grid component
  */
 
 class UserDetail extends React.Component {
@@ -29,7 +31,13 @@ class UserDetail extends React.Component {
     })
   }
 
+  /**
+   * Since the component can change depending on changes of the url, we need to use componentDidUpdate with the preious props to 
+   * check for changes and react accordingly
+   * @param {props} prevProps 
+   */
   componentDidUpdate(prevProps) {
+    console.log(this.props)
     if (this.props.match.params.userId !== prevProps.match.params.userId) {
       fetchModel("user/" + this.props.match.params.userId).then((value) => {
         this.setState({ id: this.props.match.params.userId, user: value, loaded: true })
