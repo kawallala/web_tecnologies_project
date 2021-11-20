@@ -22,6 +22,7 @@ class PhotoShare extends React.Component {
   render() {
     return (
       <HashRouter>
+        {/* Hide scrollbars and display then in components instead */}
         <Box overflow="hidden">
           <Grid container spacing={8}>
             <Grid item xs={12}>
@@ -38,9 +39,20 @@ class PhotoShare extends React.Component {
                 <Switch>
                   <Route exact path="/"
                     render={() =>
+                      <Box
+                        display="flex" 
+                        flexDirection = "column"
+                        width="100%" height="100%" 
+                        alignItems="center"
+                        justifyContent="center"
+                      >
                       <Typography variant="h3">
-                        Welcome to our photo sharing app! {<br />} Click on the users on the side to view their profiles and photos, hope you enjoy!
-                      </Typography>}
+                        Welcome to our photo sharing app!
+                      </Typography>
+                      <Typography variant="subtitle1">
+                        Click on the users on the side to view their profiles and photos, hope you enjoy!
+                      </Typography>
+                    </Box>}
                   />
                   <Route path="/users/:userId"
                     render={props => <UserDetail {...props} />}

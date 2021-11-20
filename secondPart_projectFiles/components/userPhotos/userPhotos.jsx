@@ -9,6 +9,7 @@ import {
   Typography,
   MobileStepper,
   Button,
+  FormControlLabel,
   Switch,
   CircularProgress,
   Grid
@@ -26,19 +27,26 @@ import {Link} from 'react-router-dom';
 import fetchModel from '../../lib/fetchModelData';
 
 /**
- * Define UserPhotos, a React componment of CS142 project #5
+ * Define UserPhotos, a React componment of CS142 project #5 
+ * The component displays the Photos of a user and the comments of each photo
+ * The photos are normally shown as a list, but the component has an "advanced" mode to display each photo on it's own and allowing deep linking
+ * 
+ * Component could be split up in one component for the normal view, one for the advanced view and one for the comments
  */
 class UserPhotos extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user_id : this.props.match.params.userId,
-      advancedMode: this.props.match.params.hasOwnProperty('index'),
-      activeStep: this.props.match.params.hasOwnProperty('index')? parseInt(this.props.match.params.index): 0,
-      loaded : false,
+      user_id : this.props.match.params.userId,//the user how photos should be displayed
+      advancedMode: this.props.match.params.hasOwnProperty('index'),//diaply in advanced mode or not
+      activeStep: this.props.match.params.hasOwnProperty('index')? parseInt(this.props.match.params.index): 0,//if in advanced mode which photo is displyed
+      loaded : false, // data isn't ready for displaying yet
     }
   }
 
+  /**
+   * Fetches information from the API declared in ../../lib/fetchModelData/ when the component gets displayed for the first time
+   */
   componentDidMount(){
     fetchModel("photosOfUser/" + this.props.match.params.userId).then((value)=>{
       this.setState({
@@ -48,6 +56,10 @@ class UserPhotos extends React.Component {
     })
   }
   
+  /**
+   * Fetch new information every time the userId changes
+   * if in advanced mode also chack for changes in the index
+   */
   componentDidUpdate(prevProps){
     if(this.props.match.params.userId !== prevProps.match.params.userId|| 
       (this.props.match.params.hasOwnProperty('index')&&this.props.match.params.index !== this.state.activeStep)||
@@ -63,6 +75,10 @@ class UserPhotos extends React.Component {
     }
   }
 
+  /**
+   * Builds a component that displays the comments given as parameter
+   * could be an own react component
+   */
   buildComments(comments){
     let commentView = <Box/>
     if(comments !== undefined){
@@ -104,9 +120,14 @@ class UserPhotos extends React.Component {
     return commentView
   }
 
+  /**
+   * Builds a component that displays the photos in advanced mode
+   * could be an own react component
+   */
   renderStepper(){
       const maxSteps = this.state.photos.length;
     
+      //functions to handle next and prev button presses
       const handleNext = () => {
         this.props.history.push('/photos/'+this.state.user_id+'/'+(this.state.activeStep+1))
         this.setState({
@@ -162,7 +183,8 @@ class UserPhotos extends React.Component {
         >
           {this.state.photos.map((step, index) => (
             <div key={step._id}>
-              {Math.abs(this.state.activeStep - index) <= 2 ? (
+              {//render also the previous and next image for the swipe animation
+              Math.abs(this.state.activeStep - index) <= 2 ? (
                 <Box
                   component="img"
                   sx={{
@@ -199,6 +221,10 @@ class UserPhotos extends React.Component {
     }
   };
 
+  /**
+   * Builds a component that displays the photos as a list
+   * could be an own react component
+   */
   renderList(){
     return(
       <ImageList variant="masonry" cols={3} gap={8}>
@@ -224,13 +250,20 @@ class UserPhotos extends React.Component {
   render() {
     return (
       <Box height = "100%" overflow="auto">
-        {this.state.loaded ?
+        {//if data is loaded yet render loading animaton 
+        this.state.loaded ?
         <Box>
-          <Switch
-            checked={this.state.advancedMode}
-            onChange={this.handleAdvancedModeChange}
+          <FormControlLabel
+            label="advanced mode"
+            control={
+              <Switch
+                checked={this.state.advancedMode}
+                onChange={this.handleAdvancedModeChange}
+              />
+            }
           />
-          {this.state.advancedMode?
+          {//render list view or swipeable view depending on mode
+          this.state.advancedMode?
           this.renderStepper():
           this.renderList()}
         </Box>
