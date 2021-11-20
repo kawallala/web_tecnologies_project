@@ -98,8 +98,8 @@ class UserPhotos extends React.Component {
                             </Typography>
                           </Link>
                         </Grid>
-                        <Grid item xs={6} align="right" m = {0.5}>
-                          <Typography variant="caption text" align="right">
+                        <Grid item xs={6} align="right">
+                          <Typography variant="caption text" align="right" m = {0.5}>
                             {comment.date_time}
                           </Typography>
                         </Grid>
