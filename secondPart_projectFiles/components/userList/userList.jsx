@@ -35,6 +35,7 @@ class UserList extends React.Component {
       this.setState({ userList: value, loaded: true })
     )
   }
+  
   render() {
     return (
       <Route render={({ history }) => (

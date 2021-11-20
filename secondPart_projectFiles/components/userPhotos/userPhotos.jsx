@@ -67,8 +67,8 @@ class UserPhotos extends React.Component {
       fetchModel("photosOfUser/" + this.props.match.params.userId).then((value)=>{
         this.setState({
           photos: value,
-          advancedMode: props.match.params.hasOwnProperty('index'),
-          activeStep: props.match.params.hasOwnProperty('index')? parseInt(props.match.params.index): 0,
+          advancedMode: this.props.match.params.hasOwnProperty('index'),
+          activeStep: this.props.match.params.hasOwnProperty('index')? parseInt(this.props.match.params.index): 0,
           loaded: true
         })
       })
@@ -253,7 +253,7 @@ class UserPhotos extends React.Component {
         {//if data is loaded yet render loading animaton 
         this.state.loaded ?
         <Box>
-          <FormControlLabel
+          <FormControlLabel sx={{ pl: 5 }}
             label="advanced mode"
             control={
               <Switch

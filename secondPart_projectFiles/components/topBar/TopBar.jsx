@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  AppBar, Toolbar, Typography, Box
+  AppBar, Toolbar, Typography
 } from '@material-ui/core';
 import './TopBar.css';
 import fetchModel from '../../lib/fetchModelData';
@@ -20,11 +20,11 @@ class TopBar extends React.Component {
       v : "" // v value displaying on homepage
     }
     window.addEventListener("popstate", () => { // run this code everytime url changes
-      this.marlenas_func();
+      this.updateTopBar();
     })
   }
 
-  marlenas_func(){
+  updateTopBar(){
     if(window.location.href.split("/").length > 5){ //check if it is on homepage or not
       fetchModel("user/" + window.location.href.split("/")[5]).then((value) => { // get user name from url
         this.setState({ url : window.location.href, user_id : value.first_name, home_page : false, photos : false});
@@ -39,17 +39,12 @@ class TopBar extends React.Component {
     }
   }
 
+  //run also the first time the the page is loaded 
   componentDidMount(){
-    this.marlenas_func()
+    this.updateTopBar()
   }
-
-  componentDidUpdate(){
-  }
-
-
 
   render() {
-
     return (
       <AppBar className="cs142-topbar-appBar" position="absolute">
         <Toolbar display="flex">
