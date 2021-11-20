@@ -17,6 +17,9 @@ import UserPhotos from './components/userPhotos/UserPhotos';
 class PhotoShare extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      location : "none"
+    };
   }
 
   render() {
@@ -26,7 +29,7 @@ class PhotoShare extends React.Component {
         <Box overflow="hidden">
           <Grid container spacing={8}>
             <Grid item xs={12}>
-              <TopBar />
+              <TopBar {...this.state}/>
             </Grid>
             <div className="cs142-main-topbar-buffer" />
             <Grid item sm={3}>
@@ -55,7 +58,9 @@ class PhotoShare extends React.Component {
                     </Box>}
                   />
                   <Route path="/users/:userId"
-                    render={props => <UserDetail {...props} />}
+                    render={props =>
+                      <UserDetail {...props} />
+                    }
                   />
                   <Route path="/photos/:userId/:index"
                     render={props => <UserPhotos {...props} />}
