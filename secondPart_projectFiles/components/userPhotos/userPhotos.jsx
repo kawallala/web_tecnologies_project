@@ -9,14 +9,19 @@ import {
   Typography,
   MobileStepper,
   Button,
-  Switch
+  Switch,
+  CircularProgress,
+  Grid
 } from '@mui/material';
 
-import {KeyboardArrowLeft, KeyboardArrowRight} from '@material-ui/icons';
+import {
+  KeyboardArrowLeft,
+  KeyboardArrowRight
+} from '@material-ui/icons';
+
 import SwipeableViews from 'react-swipeable-views';
 
-import { CircularProgress, Grid } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 import fetchModel from '../../lib/fetchModelData';
 
