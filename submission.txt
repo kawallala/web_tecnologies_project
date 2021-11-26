@@ -1,0 +1,5 @@
+video-link: https://youtu.be/V_ThsmyYQyY
+
+Comment to package.json:
+We added build scripts for Windows to be able to run the project on Windows and Unix systems
+If you want to start the server on a Windows system you can use the build_win and lint_win scripts.
